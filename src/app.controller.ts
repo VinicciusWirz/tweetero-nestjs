@@ -8,6 +8,7 @@ import {
   HttpException,
   Query,
   ParseIntPipe,
+  Param,
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import { TweetDTO } from './dtos/tweet.dto';
@@ -38,6 +39,7 @@ export class AppController {
       }
     }
   }
+
   @Get('tweets')
   getTweets(
     @Query('page', new ParseIntPipe({ optional: true }))
@@ -48,5 +50,10 @@ export class AppController {
     } catch (error) {
       throw new HttpException('BAD_REQUEST', HttpStatus.BAD_REQUEST);
     }
+  }
+
+  @Get('tweets/:username')
+  getTweetsFromUser(@Param('username') username: string) {
+    return this.appService.getTweetsFromUser(username);
   }
 }

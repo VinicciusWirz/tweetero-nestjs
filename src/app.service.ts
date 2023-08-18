@@ -48,4 +48,14 @@ export class AppService {
 
     return formatTweets.reverse();
   }
+
+  getTweetsFromUser(username: string) {
+    const filterTweets = this.tweets.filter(
+      (t) => t.user.username === username,
+    );
+    const formatTweets = filterTweets.map(
+      (t) => new TweetDelivery(t.user.username, t.user.avatar, t.tweet),
+    );
+    return formatTweets.reverse();
+  }
 }
