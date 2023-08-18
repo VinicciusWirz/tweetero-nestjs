@@ -6,6 +6,8 @@ import {
   HttpStatus,
   HttpCode,
   HttpException,
+  Query,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import { TweetDTO } from './dtos/tweet.dto';
@@ -34,6 +36,17 @@ export class AppController {
       if (error.message === 'UNAUTHORIZED') {
         throw new HttpException('UNAUTHORIZED', HttpStatus.UNAUTHORIZED);
       }
+    }
+  }
+  @Get('tweets')
+  getTweets(
+    @Query('page', new ParseIntPipe({ optional: true }))
+    page?: number | null,
+  ) {
+    try {
+      return this.appService.getTweets(page);
+    } catch (error) {
+      throw new HttpException('BAD_REQUEST', HttpStatus.BAD_REQUEST);
     }
   }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { TweetDTO } from './dtos/tweet.dto';
 import { SignUpUserDTO } from './dtos/user.dto';
-import { Tweet } from './entities/tweet.entity';
+import { Tweet, TweetDelivery } from './entities/tweet.entity';
 import { User } from './entities/user.entity';
 
 @Injectable()
@@ -10,6 +10,7 @@ export class AppService {
   private tweets: Tweet[];
   constructor() {
     this.users = [];
+    this.tweets = [];
   }
 
   getHello(): string {
@@ -28,5 +29,23 @@ export class AppService {
     if (!userInDB[0]) throw new Error('UNAUTHORIZED');
 
     this.tweets.push(new Tweet(userInDB[0], body.tweet));
+  }
+
+  getTweets(page: number) {
+    if (page !== undefined && page < 1) {
+      throw new Error('BAD_REQUEST');
+    }
+    const numberOfTweets = 15;
+    const start = (page - 1) * numberOfTweets;
+    const end = start + numberOfTweets;
+
+    const lastTweets = page
+      ? this.tweets.slice(-end, start ? -start : undefined)
+      : this.tweets.slice(-15);
+    const formatTweets = lastTweets.map(
+      (t) => new TweetDelivery(t.user.username, t.user.avatar, t.tweet),
+    );
+
+    return formatTweets.reverse();
   }
 }
