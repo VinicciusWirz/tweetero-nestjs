@@ -10,10 +10,10 @@ export class AppService {
   }
 
   getHello(): string {
-    return 'Hello World!';
+    return "I'm okay!";
   }
 
-  signup(body: SignUpUserDTO) {
+  signup(body: SignUpUserDTO): void {
     const user = new User(body.username, body.avatar);
     this.users.push(user);
   }
