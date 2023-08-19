@@ -31,17 +31,15 @@ export class AppService {
     this.tweets.push(new Tweet(userInDB[0], body.tweet));
   }
 
-  getTweets(page: number) {
-    if (page !== undefined && page < 1) {
+  getTweets(page: number = 1) {
+    if (page < 1) {
       throw new Error('Informe uma página válida!');
     }
     const numberOfTweets = 15;
     const start = (page - 1) * numberOfTweets;
     const end = start + numberOfTweets;
 
-    const lastTweets = page
-      ? this.tweets.slice(-end, start ? -start : undefined)
-      : this.tweets.slice(-15);
+    const lastTweets = this.tweets.slice(-end, start ? -start : undefined);
     const formatTweets = lastTweets.map(
       (t) => new TweetDelivery(t.user.username, t.user.avatar, t.tweet),
     );
