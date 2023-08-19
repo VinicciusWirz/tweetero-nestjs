@@ -33,7 +33,7 @@ export class AppService {
 
   getTweets(page: number) {
     if (page !== undefined && page < 1) {
-      throw new Error('BAD_REQUEST');
+      throw new Error('Informe uma página válida!');
     }
     const numberOfTweets = 15;
     const start = (page - 1) * numberOfTweets;

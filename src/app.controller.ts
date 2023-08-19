@@ -48,7 +48,7 @@ export class AppController {
     try {
       return this.appService.getTweets(page);
     } catch (error) {
-      throw new HttpException('BAD_REQUEST', HttpStatus.BAD_REQUEST);
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
   }
 
